@@ -1,6 +1,6 @@
 variable "this_terraform_side" {
   type        = string
-  description = "Is this for acceptor or requestor"
+  description = "Is this for acceptor|requestor"
   default     = ""
 }
 

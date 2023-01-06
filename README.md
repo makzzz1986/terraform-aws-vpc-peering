@@ -110,11 +110,12 @@ module "vpc_peering" {
   source = "cloudposse/vpc-peering/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version = "x.x.x"
-  namespace        = "eg"
-  stage            = "dev"
-  name             = "cluster"
-  requestor_vpc_id = "vpc-XXXXXXXX"
-  acceptor_vpc_id  = "vpc-YYYYYYYY"
+  namespace           = "eg"
+  stage               = "dev"
+  name                = "cluster"
+  this_terraform_side = "acceptor"
+  requestor_vpc_id    = "vpc-XXXXXXXX"
+  acceptor_vpc_id     = "vpc-YYYYYYYY"
 }
 ```
 
