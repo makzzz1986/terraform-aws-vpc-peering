@@ -1,5 +1,5 @@
 resource "aws_vpc_peering_connection" "default" {
-  count       = module.this.enabled ? 1 && var.this_terraform_side == "requester" : 0
+  count       = module.this.enabled && var.this_terraform_side == "requester"? 1  : 0
   vpc_id      = join("", data.aws_vpc.requestor.*.id)
   peer_vpc_id = join("", data.aws_vpc.acceptor.*.id)
 
