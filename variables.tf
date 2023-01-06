@@ -1,3 +1,9 @@
+variable "this_terraform_side" {
+  type        = string
+  description = "Is this for acceptor or requestor"
+  default     = ""
+}
+
 variable "requestor_vpc_id" {
   type        = string
   description = "Requestor VPC ID"
