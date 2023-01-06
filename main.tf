@@ -59,7 +59,7 @@ locals {
 
 # Create routes from requestor to acceptor
 resource "aws_route" "requestor" {
-  count                     = module.this.enabled ? length(distinct(sort(data.aws_route_tables.requestor.0.ids))) * length(local.acceptor_cidr_blocks) : 0
+  count                     = module.this.enabled && var.this_terraform_side == "acceptor"? length(distinct(sort(data.aws_route_tables.requestor.0.ids))) * length(local.acceptor_cidr_blocks) : 0
   route_table_id            = element(distinct(sort(data.aws_route_tables.requestor.0.ids)), ceil(count.index / length(local.acceptor_cidr_blocks)))
   destination_cidr_block    = local.acceptor_cidr_blocks[count.index % length(local.acceptor_cidr_blocks)]
   vpc_peering_connection_id = join("", aws_vpc_peering_connection.default.*.id)
@@ -68,7 +68,7 @@ resource "aws_route" "requestor" {
 
 # Create routes from acceptor to requestor
 resource "aws_route" "acceptor" {
-  count                     = module.this.enabled ? length(distinct(sort(data.aws_route_tables.acceptor.0.ids))) * length(local.requestor_cidr_blocks) : 0
+  count                     = module.this.enabled && var.this_terraform_side == "requester"? length(distinct(sort(data.aws_route_tables.acceptor.0.ids))) * length(local.requestor_cidr_blocks) : 0
   route_table_id            = element(distinct(sort(data.aws_route_tables.acceptor.0.ids)), ceil(count.index / length(local.requestor_cidr_blocks)))
   destination_cidr_block    = local.requestor_cidr_blocks[count.index % length(local.requestor_cidr_blocks)]
   vpc_peering_connection_id = join("", aws_vpc_peering_connection.default.*.id)
