@@ -1,5 +1,5 @@
 resource "aws_vpc_peering_connection" "default" {
-  count       = module.this.enabled ? 1 && : 0
+  count       = module.this.enabled ? 1 && var.this_terraform_side == "requester" : 0
   vpc_id      = join("", data.aws_vpc.requestor.*.id)
   peer_vpc_id = join("", data.aws_vpc.acceptor.*.id)
 
@@ -55,7 +55,6 @@ locals {
   acceptor_cidr_blocks = module.this.enabled ? tolist(setsubtract([
     for k, v in data.aws_vpc.acceptor.0.cidr_block_associations : v.cidr_block
   ], var.acceptor_ignore_cidrs)) : []
-  peering_connection_create = module.this.enabled ? 1 && var.this_terraform_side == "requester" : 0
 }
 
 # Create routes from requestor to acceptor
